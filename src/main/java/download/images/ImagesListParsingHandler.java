@@ -1,34 +1,30 @@
 package download.images;
 
+import com.yandex.disk.client.ListItem;
+import com.yandex.disk.client.ListParsingHandler;
+import com.yandex.disk.client.exceptions.WebdavClientInitException;
 
-import com.yandex.disk.client.*;
-import com.yandex.disk.client.exceptions.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
- * Download all images to folder PATH_TO_DOWNLOAD_FOLDER
- *
+ * Added photos to list of tasks
+ * <p>
  * Created by olgaoskina on 02.07.14.
  */
 public class ImagesListParsingHandler extends ListParsingHandler {
 
-    private String TYPE_IMAGE = "image";
-    private ListTask listTask;
+    private final String TYPE_IMAGE = "image.*";
+    private final List<ListItem> items;
 
-    public ImagesListParsingHandler() throws WebdavClientInitException {
-        listTask = new ListTask();
+    public ImagesListParsingHandler(List<ListItem> items) throws WebdavClientInitException {
+        this.items = items;
     }
 
     @Override
     public boolean handleItem(ListItem item) {
-        if (item.getContentType() != null) {
-            Pattern pattern = Pattern.compile(TYPE_IMAGE);
-            Matcher matcher = pattern.matcher(item.getContentType());
-            if (matcher.find()) {
-                listTask.putTask(item);
-                return true;
-            }
+        if (item.getContentType() != null && item.getContentType().matches(TYPE_IMAGE)) {
+            items.add(item);
+            return true;
         }
         return false;
     }

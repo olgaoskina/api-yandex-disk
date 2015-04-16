@@ -1,11 +1,11 @@
-package download.images;
+package download;
 
 import com.yandex.disk.client.Log;
 import com.yandex.disk.client.ProgressListener;
 
 /**
  * Print percentage of download
- * <p/>
+ * <p>
  * Created by olgaoskina on 02.07.14.
  */
 public class PrintPercentProgressListener implements ProgressListener {
@@ -20,8 +20,7 @@ public class PrintPercentProgressListener implements ProgressListener {
 
     @Override
     public void updateProgress(long loaded, long total) {
-        long percent;
-        percent = loaded * 100 / total;
+        long percent = loaded * 100 / total;
         if (percent % 10 == 0 && percent != lastPercent) {
             Log.i("[LOAD " + fileName + "]", String.valueOf(percent) + "%");
             lastPercent = percent;
